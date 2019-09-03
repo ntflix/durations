@@ -9,10 +9,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Durations',
+      darkTheme: ThemeData(
+        primarySwatch: Colors.grey,
+        primaryColor: Color.fromARGB(255, 18, 18, 18),
+        primaryTextTheme: TextTheme(
+          headline: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold, color: Colors.white70),
+          title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, fontFamily: 'Hind', color: Colors.white70),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Dohyeon', color: Colors.white70),
+        )
+      ),
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-        primaryColor: Colors.pink,
-        primaryColorDark: Colors.purpleAccent,
+        primarySwatch: Colors.grey,
+        primaryColor: Color.fromARGB(255, 237, 237, 237),
         primaryTextTheme: TextTheme(
           headline: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
           title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, fontFamily: 'Hind'),
