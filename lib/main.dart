@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
       defaultBrightness: Brightness.dark,
       data: (brightness) => new ThemeData(  // bit messy
         brightness: brightness == Brightness.dark ? Brightness.dark : Brightness.light,
-        accentColor: brightness == Brightness.dark ? Colors.purple : Colors.pink,
-        primarySwatch:  brightness == Brightness.dark ? Colors.purple : Colors.pink,
+        accentColor: brightness == Brightness.dark ? Colors.white : Colors.black,
+        primarySwatch:  brightness == Brightness.dark ? Colors.red : Colors.pink,
         primaryColor:  brightness == Brightness.dark ? Color.fromARGB(255, 18, 18, 18) : Color.fromARGB(255, 237, 237, 237),
         primaryTextTheme: TextTheme(
           headline: TextStyle(fontSize: 48.0, fontFamily: 'Dohyeon', fontWeight: FontWeight.bold, color:  brightness == Brightness.dark ? Colors.white70 : Colors.black87),

@@ -13,6 +13,12 @@ class DurationPage extends StatefulWidget {
 }
 
 class _DurationPageState extends State<DurationPage> {
+  List<TextEditingController> _controllers = [
+    new TextEditingController(),
+    new TextEditingController(),
+    new TextEditingController(),
+    new TextEditingController(),
+  ];
   List<String> inputs = List.filled(4,"0");
   final numColumns = 4;
   var value = true;
@@ -58,6 +64,19 @@ class _DurationPageState extends State<DurationPage> {
     return p;
   }
 
+  void _clear() {
+    duration = Duration(seconds: 0);
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    days = 0;
+    _controllers.forEach((controller) => controller.clear());
+    for (int i = 0; i < inputs.length; i++){
+      inputs[i] = ""  ;
+    }
+    setState(() {});
+  }
+
   @override
   void initState() {
     getTheme().then((val) => value = val);
@@ -72,6 +91,9 @@ class _DurationPageState extends State<DurationPage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onDoubleTap: () {
+        _clear();
+      },
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
@@ -91,8 +113,11 @@ class _DurationPageState extends State<DurationPage> {
                 });
               },
               activeColor: DynamicTheme.of(context).data.accentColor,
+              activeTrackColor: DynamicTheme.of(context).data.accentColor.withOpacity(0.6),
               inactiveThumbColor: DynamicTheme.of(context).data.accentColor,
               inactiveTrackColor: DynamicTheme.of(context).data.accentColor.withOpacity(0.6),
+              activeThumbImage: ExactAssetImage("assets/moon-light.png"),
+              inactiveThumbImage: ExactAssetImage("assets/moon-dark.png"),
             ),
           ],
           shape: RoundedRectangleBorder(
@@ -144,11 +169,12 @@ class _DurationPageState extends State<DurationPage> {
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
+                        controller: _controllers[0],
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22),
+                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
                         ),
                       ),
                     ),
@@ -162,11 +188,12 @@ class _DurationPageState extends State<DurationPage> {
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
+                        controller: _controllers[1],
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22),
+                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
                         )
                       ),
                     ),
@@ -180,11 +207,12 @@ class _DurationPageState extends State<DurationPage> {
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
+                        controller: _controllers[2],
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22),
+                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
                         )
                       ),
                     ),
@@ -198,11 +226,12 @@ class _DurationPageState extends State<DurationPage> {
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
+                        controller: _controllers[3],
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22),
+                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),    // I really should make an object instead of just copying code
                         ),
                       ),
                     ),
@@ -250,7 +279,7 @@ class _DurationPageState extends State<DurationPage> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text(minutes.toString(), style: DynamicTheme.of(context).data.primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns)/minutes.toString().length)))
+                      child: Center(child: Text(minutes.toString(), style: DynamicTheme .of(context).data.primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns)/minutes.toString().length)))
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
@@ -258,6 +287,11 @@ class _DurationPageState extends State<DurationPage> {
                     ),
                   ],
                 ),
+              ),
+
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Text("double tap to clear", style: DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey))
               ),
             ],
           ),
