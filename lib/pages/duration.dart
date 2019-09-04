@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class DurationPage extends StatefulWidget {
   DurationPage({Key key}) : super(key: key);
@@ -106,11 +107,11 @@ class _DurationPageState extends State<DurationPage> {
               Switch(
               value: value,
               onChanged: (val) {
-                setTheme(val);
+                value = val;
                 setState(() {
-                  value = val;
                   DynamicTheme.of(context).setBrightness(val ? Brightness.dark: Brightness.light);
                 });
+                setTheme(val);
               },
               activeColor: DynamicTheme.of(context).data.accentColor,
               activeTrackColor: DynamicTheme.of(context).data.accentColor.withOpacity(0.6),
@@ -170,6 +171,8 @@ class _DurationPageState extends State<DurationPage> {
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
                         controller: _controllers[0],
+                        maxLength: 8,
+                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
@@ -189,6 +192,8 @@ class _DurationPageState extends State<DurationPage> {
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
                         controller: _controllers[1],
+                        maxLength: 8,
+                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
@@ -208,6 +213,8 @@ class _DurationPageState extends State<DurationPage> {
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
                         controller: _controllers[2],
+                        maxLength: 8,
+                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
@@ -227,6 +234,8 @@ class _DurationPageState extends State<DurationPage> {
                         textAlign: TextAlign.center,
                         style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
                         controller: _controllers[3],
+                        maxLength: 8,
+                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
                         decoration: InputDecoration(
                           border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
                           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
