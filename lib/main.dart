@@ -1,43 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:durations/pages/duration.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   Future<void> initPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool("darkMode") == null) {
-      prefs.setBool("darkMode", true);
-    }
+    // try {
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   if (prefs.getBool("darkMode") == null) {
+    //     prefs.setBool("darkMode", true);
+    //   }
+    // } catch (_) {
+    //   print("Shared preferences not supported on this platform.");
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    initPrefs();
-    return new DynamicTheme(
-      defaultBrightness: Brightness.dark,
-      data: (brightness) => new ThemeData(  // bit messy
-        brightness: brightness == Brightness.dark ? Brightness.dark : Brightness.light,
-        accentColor: brightness == Brightness.dark ? Colors.white : Colors.black,
-        primarySwatch:  brightness == Brightness.dark ? Colors.red : Colors.pink,
-        primaryColor:  brightness == Brightness.dark ? Color.fromARGB(255, 18, 18, 18) : Color.fromARGB(255, 237, 237, 237),
+    // initPrefs();
+    final brightness = Theme.of(context).brightness;
+
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Durations',
+      darkTheme: ThemeData(
+        // bit messy
+        brightness: Brightness.dark,
+        accentColor: Colors.white,
+        primarySwatch: Colors.red,
+        primaryColor: Color.fromARGB(255, 18, 18, 18),
         primaryTextTheme: TextTheme(
-          headline: TextStyle(fontSize: 48.0, fontFamily: 'Dohyeon', fontWeight: FontWeight.bold, color:  brightness == Brightness.dark ? Colors.white70 : Colors.black87),
-          title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, fontFamily: 'Hind', color:  brightness == Brightness.dark ? Colors.white70 : Colors.black87),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'Dohyeon', color:  brightness == Brightness.dark ? Colors.white70 : Colors.black87),
-        )
+          headline: TextStyle(fontSize: 48.0, fontFamily: 'Dohyeon', fontWeight: FontWeight.bold, color: Colors.white70),
+          title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, fontFamily: 'Hind', color: Colors.white70),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Dohyeon', color: Colors.white70),
+        ),
       ),
-      themedWidgetBuilder: (context, theme) {
-        return new MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Durations',
-          theme: theme,
-          home: DurationPage(),
-        );
-      },
+      theme: ThemeData(
+        // bit messy
+        brightness: Brightness.light,
+        accentColor: Colors.black,
+        primarySwatch: Colors.pink,
+        primaryColor: Color.fromARGB(255, 237, 237, 237),
+        primaryTextTheme: TextTheme(
+          headline: TextStyle(fontSize: 48.0, fontFamily: 'Dohyeon', fontWeight: FontWeight.bold, color: Colors.black87),
+          title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, fontFamily: 'Hind', color: Colors.black87),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Dohyeon', color: Colors.black87),
+        ),
+      ),
+      home: DurationPage(),
     );
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 
 class DurationPage extends StatefulWidget {
@@ -20,7 +18,7 @@ class _DurationPageState extends State<DurationPage> {
     new TextEditingController(),
     new TextEditingController(),
   ];
-  List<String> inputs = List.filled(4,"0");
+  List<String> inputs = List.filled(4, "0");
   final numColumns = 4;
   var value = true;
   Duration duration = Duration(seconds: 0);
@@ -51,18 +49,7 @@ class _DurationPageState extends State<DurationPage> {
     this.days = total.inDays;
     this.hours = (total.inHours - days * 24);
     this.minutes = (total.inMinutes - (hours * 60 + days * 1440));
-    this.seconds = (total.inSeconds - (minutes * 60 + hours * 3600 + days * 86400));  // this code hahahahahaaaaa lmaoo oops
-  }
-
-  Future<void> setTheme(bool val) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("darkMode", val);
-  }
-
-  Future<bool> getTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var p = prefs.getBool("darkMode");
-    return p;
+    this.seconds = (total.inSeconds - (minutes * 60 + hours * 3600 + days * 86400)); // this code hahahahahaaaaa lmaoo oops
   }
 
   void _clear() {
@@ -72,21 +59,10 @@ class _DurationPageState extends State<DurationPage> {
     hours = 0;
     days = 0;
     _controllers.forEach((controller) => controller.clear());
-    for (int i = 0; i < inputs.length; i++){
-      inputs[i] = ""  ;
+    for (int i = 0; i < inputs.length; i++) {
+      inputs[i] = "";
     }
     setState(() {});
-  }
-
-  @override
-  void initState() {
-    getTheme().then((val) => value = val);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -99,28 +75,9 @@ class _DurationPageState extends State<DurationPage> {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: Scaffold(
-        backgroundColor: DynamicTheme.of(context).data.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           title: Text("durations"),
-          actions:
-            [
-              Switch(
-              value: value,
-              onChanged: (val) {
-                value = val;
-                setState(() {
-                  DynamicTheme.of(context).setBrightness(val ? Brightness.dark: Brightness.light);
-                });
-                setTheme(val);
-              },
-              activeColor: DynamicTheme.of(context).data.accentColor,
-              activeTrackColor: DynamicTheme.of(context).data.accentColor.withOpacity(0.6),
-              inactiveThumbColor: DynamicTheme.of(context).data.accentColor,
-              inactiveTrackColor: DynamicTheme.of(context).data.accentColor.withOpacity(0.6),
-              activeThumbImage: ExactAssetImage("assets/moon-light.png"),
-              inactiveThumbImage: ExactAssetImage("assets/moon-dark.png"),
-            ),
-          ],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(8),
@@ -137,20 +94,20 @@ class _DurationPageState extends State<DurationPage> {
                   children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("D", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("D", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                       // yeah you could make a default style variable instead of all this but i haven't
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("H", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("H", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("M", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("M", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("S", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("S", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                     )
                   ],
                 ),
@@ -158,96 +115,101 @@ class _DurationPageState extends State<DurationPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 60,
-                child : Row(
+                child: Row(
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
                       child: TextField(
                         onChanged: (value) {
                           inputs[0] = value; // one could add a watcher/observer to the 'inputs[]' variable but it doesn't really matter
-                          setState(() { setDurations(); });
+                          setState(() {
+                            setDurations();
+                          });
                         },
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
-                        style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
+                        style: Theme.of(context).textTheme.title.copyWith(fontSize: 22),
                         controller: _controllers[0],
                         maxLength: 8,
-                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
+                        buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) => null,
                         decoration: InputDecoration(
-                          border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
+                          border: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
                           hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
+                          hintStyle: Theme.of(context).primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
                         ),
                       ),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
                       child: TextField(
-                        onChanged: (value) {
-                          inputs[1] = value;
-                          setState(() { setDurations(); });
-                        },
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
-                        controller: _controllers[1],
-                        maxLength: 8,
-                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
-                          hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
-                        )
-                      ),
+                          onChanged: (value) {
+                            inputs[1] = value;
+                            setState(() {
+                              setDurations();
+                            });
+                          },
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.title.copyWith(fontSize: 22),
+                          controller: _controllers[1],
+                          maxLength: 8,
+                          buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) => null,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                            hintText: "000",
+                            hintStyle: Theme.of(context).primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
+                          )),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
                       child: TextField(
-                        onChanged: (value) {
-                          inputs[2] = value;
-                          setState(() { setDurations(); });
-                        },
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
-                        controller: _controllers[2],
-                        maxLength: 8,
-                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
-                          hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
-                        )
-                      ),
+                          onChanged: (value) {
+                            inputs[2] = value;
+                            setState(() {
+                              setDurations();
+                            });
+                          },
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.title.copyWith(fontSize: 22),
+                          controller: _controllers[2],
+                          maxLength: 8,
+                          buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) => null,
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                            hintText: "000",
+                            hintStyle: Theme.of(context).primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),
+                          )),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
                       child: TextField(
                         onChanged: (value) {
                           inputs[3] = value;
-                          setState(() { setDurations(); });
+                          setState(() {
+                            setDurations();
+                          });
                         },
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
-                        style: DynamicTheme.of(context).data.textTheme.title.copyWith(fontSize: 22),
+                        style: Theme.of(context).textTheme.title.copyWith(fontSize: 22),
                         controller: _controllers[3],
                         maxLength: 8,
-                        buildCounter: (BuildContext context, { int currentLength, int maxLength, bool isFocused }) => null,
+                        buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) => null,
                         decoration: InputDecoration(
-                          border: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
-                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: DynamicTheme.of(context).data.accentColor)),
+                          border: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor)),
                           hintText: "000",
-                          hintStyle:  DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey),    // I really should make an object instead of just copying code
+                          hintStyle: Theme.of(context).primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey), // I really should make an object instead of just copying code
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.only(top: 40),
                 width: MediaQuery.of(context).size.width,
@@ -255,20 +217,20 @@ class _DurationPageState extends State<DurationPage> {
                   children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("D", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("D", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                       // yeah you could make a default style variable instead of all this but i haven't
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("H", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("H", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("M", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("M", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text("S", style: DynamicTheme.of(context).data.textTheme.body1.copyWith(fontSize: 20))),
+                      child: Center(child: Text("S", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 20))),
                     )
                   ],
                 ),
@@ -276,32 +238,16 @@ class _DurationPageState extends State<DurationPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 120,
-                child : Row(
+                child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text(days.toString(), style: DynamicTheme.of(context).data.primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns)/days.toString().length)))
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text(hours.toString(), style: DynamicTheme.of(context).data.primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns)/hours.toString().length)))
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text(minutes.toString(), style: DynamicTheme .of(context).data.primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns)/minutes.toString().length)))
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / numColumns,
-                      child: Center(child: Text(seconds.toString(), style: DynamicTheme.of(context).data.primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns)/seconds.toString().length)))
-                    ),
+                    Container(width: MediaQuery.of(context).size.width / numColumns, child: Center(child: Text(days.toString(), style: Theme.of(context).primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns) / days.toString().length)))),
+                    Container(width: MediaQuery.of(context).size.width / numColumns, child: Center(child: Text(hours.toString(), style: Theme.of(context).primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns) / hours.toString().length)))),
+                    Container(width: MediaQuery.of(context).size.width / numColumns, child: Center(child: Text(minutes.toString(), style: Theme.of(context).primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns) / minutes.toString().length)))),
+                    Container(width: MediaQuery.of(context).size.width / numColumns, child: Center(child: Text(seconds.toString(), style: Theme.of(context).primaryTextTheme.headline.copyWith(fontSize: (MediaQuery.of(context).size.width / numColumns) / seconds.toString().length)))),
                   ],
                 ),
               ),
-
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Text("double tap to clear", style: DynamicTheme.of(context).data.primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey))
-              ),
+              Container(margin: EdgeInsets.only(top: 10), child: Text("double tap to clear", style: Theme.of(context).primaryTextTheme.title.copyWith(fontSize: 22, color: Colors.grey))),
             ],
           ),
         ),

@@ -1,16 +1,13 @@
-# durations
+# durations ⏱
 
-duration niceifier
+Duration niceifier.
 
-## Getting Started
+## Takes a time input - eg, 748 seconds, 44 hours and 2 days - and transforms it into a logical format
+![image](readme/dark.png)
 
-This project is a starting point for a Flutter application.
+## Automatic theme switching
+![image-light](readme/light.png)
 
-A few resources to get you started if this is your first Flutter project:
+Basically just a quick utility app made out of boredom.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+*This project has some really bad coding practices.*
